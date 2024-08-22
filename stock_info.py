@@ -12,22 +12,12 @@ class investment_info:
         status = self.client.market_status(exchange=exchange)
         return status
 
-    def get_company_profile_free(self, symbol: Type[str]=None, ISIN: Type[str]=None, cusip: Type[str]=None) -> Dict[str, Union[str, int]]:
-
-        code_value = symbol if symbol is not None else ISIN if ISIN is not None else cusip
-
-        if code_value is None:
-            return ValueError("At least one of the parameters must be provided")
-
-        profile = self.client.company_profile(symbol=code_value)
-        return profile
-
     def company_news(self, symbol: Type[str], _from: Type[str], to: Type[str]) -> List[Dict[str, Union[str, int]]]:
         news = self.client.company_news(symbol=symbol, _from=_from, to=to)
         return news
     
     def peers(self, symbol: Type[str]) -> List[Dict[str, Union[str, int]]]:
-        peers = self.client.peers(symbol=symbol)
+        peers = self.client.company_peers(symbol=symbol)
         return peers
 
     def stock_insider_transactions(self, symbol: Type[str], _from: Type[str], to: Type[str]) -> List[Dict[str, Union[str, int]]]:
@@ -42,15 +32,41 @@ class investment_info:
         quote = self.client.quote(symbol=symbol)
         return quote
     
-    def country(self, symbol: Type[str]) -> Dict[str, Union[str, int]]:
-        country = self.client.country(symbol=symbol)
-        return country
-    
 if __name__ == "__main__":
     # Example usage
     api_key = api.APIKeys.finhub_api_key
     tracker = investment_info(api_key)
-    quote = tracker.get_stock_quote('AAPL')
-    profile = tracker.get_company_profile('AAPL')
-    print(quote)
-    print(profile)
+
+    # Get market status
+    exchange = "US"
+    market_status = tracker.get_market_status(exchange)
+    print("Market Status:", market_status)
+
+    # Get company news
+    symbol = "AAPL"
+    start_date = "2022-01-01"
+    end_date = "2022-01-31"
+    news = tracker.company_news(symbol=symbol, _from=start_date, to=end_date)
+    print("Company News:", news)
+
+    # Get peers
+    symbol = "AAPL"
+    peers = tracker.peers(symbol=symbol)
+    print("Peers:", peers)
+
+    # Get insider transactions
+    symbol = "AAPL"
+    start_date = "2022-01-01"
+    end_date = "2022-01-31"
+    insider_transactions = tracker.stock_insider_transactions(symbol=symbol, _from=start_date, to=end_date)
+    print("Insider Transactions:", insider_transactions)
+
+    # Get recommendations
+    symbol = "AAPL"
+    recommendations = tracker.recomendations(symbol=symbol)
+    print("Recommendations:", recommendations)
+
+    # Get stock quote
+    symbol = "AAPL"
+    quote = tracker.get_stock_quote(symbol=symbol)
+    print("Stock Quote:", quote)

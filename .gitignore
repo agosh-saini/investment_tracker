@@ -157,6 +157,16 @@ cython_debug/
 # API keys
 api.py
 
+# virtualenv
+#   If you are working with Python, it's helpful to include the virtualenv directory
+#   since this allows others to recreate the same environment.
+virtualenv/
+
+# JSON data storage
+#  The JSON file format is often used for configuration files and data storage,
+#  but its use may be specific to your project.
+*.json
+
 # PyCharm
 #  JetBrains specific template is maintained in a separate JetBrains.gitignore that can
 #  be found at https://github.com/github/gitignore/blob/main/Global/JetBrains.gitignore
